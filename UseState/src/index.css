@@ -109,3 +109,21 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+button{
+  margin: 0px 10px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  border: none;
+  font-size: 2rem;
+  background: rebeccapurple;
+}
+button:active{
+  background: rgb(127, 108, 146);
+  color: black;
+}
+h1{
+  width: fit-content;
+  height: 30px;
+  margin: 50px auto;
+  font-size: 3rem;
+}
