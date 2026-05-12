@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
+
+
 
 const App = () => {
+  const [title, setTitle] = useState('')
   const sumbitHandler = (e) => {
     e.preventDefault()
-    console.log('form submitted')
+    console.log('form submitted' , title)
+    setTitle('')
   }
   return (
     <div>
@@ -11,7 +15,14 @@ const App = () => {
       <form onSubmit={(e)=>{
         sumbitHandler(e)
       }}>
-        <input type="text" placeholder='Enter your name.'/>
+        <input type="text"
+        value={title}
+         onChange={(e)=>{
+          
+          setTitle(e.target.value);
+          
+         }}
+          placeholder='Enter your name.'/>
         <button>Submit</button>
       </form>
     </div>
