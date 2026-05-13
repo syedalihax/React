@@ -19,6 +19,9 @@ const App = () => {
     setDetail('')
     setTitle('')
   }
+const Dlt = () =>{
+  const newTask
+}
   const handleInput = (e) => {
     const element = e.target;
     element.style.height = "auto";
@@ -36,6 +39,7 @@ const App = () => {
 
           e.preventDefault()
           submitHandler(e)
+          console.log(task)
         }
       }}
         className='flex w-full sm:w-11/12 md:w-10/12 md:max-w-175 mx-auto  flex-col gap-5 p-5 sm:p-8'>
@@ -71,8 +75,19 @@ const App = () => {
         <h1 className='ml-8 mb-2.5 sm:ml-15 md:ml-20 text-3xl font-bold'>Your Recent Notes</h1>
         <div className=' py-15 px-5 sm:px-10 md:px-10 w-full flex gap-y-8 gap-x-3 flex-wrap justify-evenly max-h-[60vh] overflow-y-auto'>
           {task.map((data, idx) => {
-            return <Card key={idx} title={data.title} detail={data.detail} />
+            return (
+
+              <Card
+               
+                key={idx}
+                title={data.title}
+                detail={data.detail}
+               
+                />
+            )
           })}
+
+
         </div>
       </div>
 
