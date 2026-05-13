@@ -10,20 +10,21 @@ const App = () => {
   const submitHandler = (e) => {
 
     const newTask = [...task]
-
+    
     newTask.push({ title, detail })
-
+    
     setTask(newTask)
-
-
+    
+    
     setDetail('')
     setTitle('')
   }
-const Dlt = (index) =>{
-  const newTask = [...task]
-  newTask.splice(index , 1)
-  setTask(newTask)
-}
+  
+  const Del = (id) =>{
+    const newTask = [...task]
+    newTask.splice(id , 1)
+    setTask(newTask)
+  }
   const handleInput = (e) => {
     const element = e.target;
     element.style.height = "auto";
@@ -83,7 +84,7 @@ const Dlt = (index) =>{
                 key={idx}
                 title={data.title}
                 detail={data.detail}
-                function={Dlt}
+                action = {Del}
                 />
             )
           })}

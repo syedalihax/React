@@ -8,7 +8,7 @@ const Card = (props) => {
       <X 
         onClick={
           ()=>{
-           props.function(props.id) 
+            props.action(props.id)
           }
         }
         className='absolute right-5 top-7 hover:bg-gray-400 cursor-pointer w-8 h-8 p-1 bg-gray-300 rounded-2xl'
