@@ -15,7 +15,7 @@ const App = () => {
     //   console.error("Fetching error: ", error)
     // }
     const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-    console.log(response.data)
+    setConvertedData(response.data)
   }
 
   return (
