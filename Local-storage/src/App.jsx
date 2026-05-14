@@ -6,14 +6,6 @@ const App = () => {
   const [convertedData, setConvertedData] = useState([])
 
   async function getdata() {
-    // try {
-    //   const response = await fetch('https://jsonplaceholder.typicode.com/users')
-    //   const finalData = await response.json() 
-    //   setConvertedData(finalData) 
-    //   console.log(finalData) 
-    // } catch (error) {
-    //   console.error("Fetching error: ", error)
-    // }
     const response = await axios.get('https://jsonplaceholder.typicode.com/users')
     setConvertedData(response.data)
   }
