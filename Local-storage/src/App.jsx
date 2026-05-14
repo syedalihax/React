@@ -1,18 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Card from './components/Card'
+import axios from 'axios'
 
 const App = () => {
+  const [convertedData, setConvertedData] = useState([])
 
   async function getdata() {
-    const data = await fetch('https://jsonplaceholder.typicode.com/users')
-    const converted = await data.json(data)
-    console.log(converted)
+    // try {
+    //   const response = await fetch('https://jsonplaceholder.typicode.com/users')
+    //   const finalData = await response.json() 
+    //   setConvertedData(finalData) 
+    //   console.log(finalData) 
+    // } catch (error) {
+    //   console.error("Fetching error: ", error)
+    // }
+    const response = await axios.get('https://jsonplaceholder.typicode.com/users')
+    console.log(response.data)
   }
+
   return (
     <div>
-      <div>
+      {convertedData.map((item) => {
+        return (
+          <Card key={item.id} id={item.id} name={item.name} username={item.username} email={item.email}/>
+        )
         
-      </div>
-      <button onClick={getdata}>Get Information</button>
+      })}
+
+      <button onClick={getdata}>
+        Get Information
+      </button>
     </div>
   )
 }

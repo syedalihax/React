@@ -1,0 +1,71 @@
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  background-color: #f0f2f5;
+}
+
+/* Main Card Styling */
+.user-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  width: 300px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  border: 1px solid #eaeaea;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.user-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  border-color: #0366d6;
+}
+
+/* ID Badge */
+.user-card span {
+  background-color: #e7f3ff;
+  color: #0366d6;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+/* Name Heading */
+.user-card h3 {
+  margin: 0 0 20px 0;
+  color: #1a1a1a;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Labels (Username, Email Address) */
+.user-card .label {
+  font-size: 0.75rem;
+  color: #8c8c8c;
+}
+/* Values (Actual data) */
+.user-card .value {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* Email Link */
+.user-card a {
+  color: #0366d6;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.user-card a:hover {
+  border-bottom-color: #0366d6;
+}
