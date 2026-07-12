@@ -10,9 +10,3 @@ body {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   padding: 10px;
 }
-.cardsection{
-  display: flex;
-  justify-content: start;
-  gap: 20px;
-  flex-wrap: wrap;
-}
