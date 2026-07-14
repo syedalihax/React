@@ -1,28 +1,41 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 const App = () => {
   const [user, setUser] = useState([])
+  const [loading, setLoading ] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-
     const getUsers = async () => {
 
-    const response = await fetch('https://jsonplaceholder.typicode.com/users')
+      try {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/users') 
 
-    const data = await response.json()
-    
-    setUser(data)
+        setUser(response.data)
 
-  }
-  getUsers()  
-   
+      }
+      catch (error) {
+        setError(error.message)
+      }
+      finally{
+        setLoading(false)
+      }
+
+    }
+    getUsers()
+
   }, [])
 
-
+  if(loading){
+    return(
+      <h1>loading...</h1>
+    )
+  }
   return (
     <>
-      {user.map((userdata)=>{
-        return(
+      {user.map((userdata) => {
+        return (
           <div key={userdata.id}>
             <hr />
             <h2>{userdata.name}</h2>
@@ -31,6 +44,7 @@ const App = () => {
           </div>
         )
       })}
+      {error && <h2>{error}</h2>}
     </>
   )
 }
