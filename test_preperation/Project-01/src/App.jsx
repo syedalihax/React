@@ -1,52 +1,28 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { Routes, Route , Link ,useNavigate } from "react-router-dom";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+
 const App = () => {
-  const [user, setUser] = useState([])
-  const [loading, setLoading ] = useState(true)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    const getUsers = async () => {
-
-      try {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/users') 
-
-        setUser(response.data)
-
-      }
-      catch (error) {
-        setError(error.message)
-      }
-      finally{
-        setLoading(false)
-      }
-
-    }
-    getUsers()
-
-  }, [])
-
-  if(loading){
-    return(
-      <h1>loading...</h1>
-    )
-  }
   return (
     <>
-      {user.map((userdata) => {
-        return (
-          <div key={userdata.id}>
-            <hr />
-            <h2>{userdata.name}</h2>
-            <h2>{userdata.username}</h2>
-            <h2>Email: {userdata.email}</h2>
-          </div>
-        )
-      })}
-      {error && <h2>{error}</h2>}
-    </>
-  )
-}
+    <nav>
+      <Link to={'/'}>Home</Link>
+      <Link to={'/about'}>About</Link>
+      <Link to={'/contact'}>Contact</Link>
+    </nav>
+    <Routes>
 
-export default App
+      <Route path="/" element={<Home />} />
+
+      <Route path="/about" element={<About />} />
+
+      <Route path="/contact" element={<Contact />} />
+
+    </Routes>
+    </>
+  );
+};
+
+export default App;
