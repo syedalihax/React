@@ -2,8 +2,19 @@ const express = require("express");
 
 const app = express();
 
-// Middleware
-app.use(express.json());
+app.use((req, res, next) => {
+
+    console.log("Middleware Chala");
+
+    next();
+
+});
+
+app.get("/", (req, res) => {
+
+    res.send("Home");
+
+});
 
 app.post("/users", (req, res) => {
 
