@@ -19,7 +19,10 @@ app.post('/students', (req, res) => {
     students.push(req.body)
     console.log("Student Added")
     let newStudent = req.body.name
-    res.send(`Student Name ${newStudent} registered succesfully.`)
+    res.json({
+        success: true,
+        message: `Student ${newStudent} registered successfully`
+    });
 })
 
 app.listen(3000, () => {
