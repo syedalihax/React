@@ -128,7 +128,22 @@ app.put("/students/:id", async (req, res) => {
 
 })
 
+app.delete("/students/:id", async (req, res) => {
+    try {
+        const Deleted = await Model.findByIdAndDelete(req.params.id)
+        res.status(200).json({
+            success : true,
+            message : "Student Removed Succcesfully",
+            data: Deleted
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
 
+})
 
 app.listen(3000, () => {
     console.log("Server runs https://localhost:3000");
