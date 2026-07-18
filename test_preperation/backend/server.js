@@ -128,6 +128,7 @@ app.put("/students/:id", async (req, res) => {
 
 })
 
+
 app.delete("/students/:id", async (req, res) => {
     try {
         const Deleted = await Model.findByIdAndDelete(req.params.id)
