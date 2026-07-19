@@ -128,6 +128,22 @@ app.put("/students/:id", async (req, res) => {
 
 })
 
+app.patch("/students/:id", async (req, res) => {
+    try {
+        const PUpdated = await Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        res.status(200).json({
+            success : true,
+            message : "Student Updated Succcesfully",
+            data: PUpdated
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+
+})
 
 app.delete("/students/:id", async (req, res) => {
     try {
