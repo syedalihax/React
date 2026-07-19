@@ -23,9 +23,15 @@ mongoose.connect("mongodb://127.0.0.1:27017/backend_practice")
 const Rules = new mongoose.Schema(
     {
 
-        name: String,
+        name: {
+            type : String,
+            required : true
+        },
 
-        age: Number
+        age:{
+            type : Number, 
+            required : true
+        }
 
     },
     {
