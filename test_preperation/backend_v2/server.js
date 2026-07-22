@@ -22,7 +22,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/company_management")
 // Schema 
 // ----------------------------------------------------------------------
 
-const EmployeeSchema = new mongoose.Schema(
+const employeeSchema = new mongoose.Schema(
     {
         name:{
             type : String,
@@ -38,12 +38,13 @@ const EmployeeSchema = new mongoose.Schema(
             required : true
         },
         role:{
+            type: String,
             default : "Employee"
         },
         
     },
     {
-        collection : "EmloyeesCollection"
+        collection : "Employees"
     }
 )
 
@@ -52,7 +53,7 @@ const EmployeeSchema = new mongoose.Schema(
 // Model 
 // ----------------------------------------------------------------------
 
-const EmployeeModel = mongoose.model("employee" , EmployeeSchema )
+const Employee = mongoose.model("Employee" , employeeSchema )
 
 // ----------------------------------------------------------------------
 // Routes
