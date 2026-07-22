@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcrypt");
 const app = express();
 
 app.use(express.json());
@@ -25,13 +25,22 @@ const Rules = new mongoose.Schema(
 
         name: {
             type : String,
-            required : true
+            required : true,
+            minlength : 3,
+            maxlenth : 30
         },
 
         age:{
             type : Number, 
-            required : true
-        }
+            required : true,
+            min : 18,
+            max : 60
+        },
+
+        role:{
+            type : String ,
+            default : "user",
+        },
 
     },
     {
@@ -168,6 +177,27 @@ app.delete("/students/:id", async (req, res) => {
 
 })
 
+// ==============================================
+
+app.patch("/students/:id" , async (req , res) =>{
+    try {
+        const  student = await Model.findById(req.params.id)
+        student.role = "user"
+        const sinDocUpdate = await student.save()
+        if(!student) return console.error("404");
+        
+        res.status(200).json({
+            success : true,
+            message : "Student update Succcesfully",
+            data: sinDocUpdate
+    })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+})
 app.listen(3000, () => {
     console.log("Server runs https://localhost:3000");
 
