@@ -52,8 +52,7 @@ const EmployeeSchema = new mongoose.Schema(
 // Model 
 // ----------------------------------------------------------------------
 
-
-
+const EmployeeModel = mongoose.model("employee" , EmployeeSchema )
 
 // ----------------------------------------------------------------------
 // Routes
