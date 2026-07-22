@@ -22,7 +22,30 @@ mongoose.connect("mongodb://127.0.0.1:27017/company_management")
 // Schema 
 // ----------------------------------------------------------------------
 
-
+const EmployeeSchema = new mongoose.Schema(
+    {
+        name:{
+            type : String,
+            minlength : 3,
+            maxlength : 15,
+            required : true
+        },
+        email:{
+            type : String,
+            required : true
+        },
+        password:{
+            required : true
+        },
+        role:{
+            default : "Employee"
+        },
+        
+    },
+    {
+        collection : "EmloyeesCollection"
+    }
+)
 
 
 // ----------------------------------------------------------------------
