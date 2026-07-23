@@ -1,7 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
-
+const jwt = require("jsonwebtoken")
 const app = express()
 
 app.use(express.json())
@@ -126,24 +126,33 @@ app.post("/login", async (req, res) => {
             })
         }
 
-        const passwordMatched  = await bcrypt.compare(clientData.password, user.password)
-        if (!passwordMatched ) {
+        const passwordMatched = await bcrypt.compare(clientData.password, user.password)
+        if (!passwordMatched) {
             return res.status(401).json({
                 success: false,
                 message: "invalid Password"
             })
         }
+        const token = jwt.sign(
+            {
+                id: user._id,
+                role: user.role
+            },
+            "MySecretKey123"
+        );
+
 
         res.status(200).json({
             success: true,
             message: "Login Successful",
+            token: token,
             data: {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role
             }
-        })
+        });
 
     } catch (error) {
         res.status(500).json({
