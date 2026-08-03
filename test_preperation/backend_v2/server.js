@@ -3,9 +3,10 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const app = express()
+const secret_Key = "MySecretKey123"
+
 
 app.use(express.json())
-
 
 // ----------------------------------------------------------------------
 // Mongoose 
@@ -57,6 +58,59 @@ const employeeSchema = new mongoose.Schema(
 const Employee = mongoose.model("Employee", employeeSchema)
 
 // ----------------------------------------------------------------------
+// Middleware
+// ----------------------------------------------------------------------
+
+function authMiddleware(req, res, next) {
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(401).json({
+            success: false,
+            message: "Header Not Found"
+        });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    try {
+
+        const authResult = jwt.verify(token, secret_Key);
+
+        req.user = authResult;
+
+        console.log("First Middleware");
+
+        next();
+
+    } catch (error) {
+
+        return res.status(401).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+}
+
+function managerMiddleware(req, res, next) {
+    console.log(req.user.role)
+    if (req.user.role !== "manager") {
+
+        return res.status(403).json({
+            success: false,
+            message: "Unauthorized"
+        });
+
+    }
+
+    console.log("second MiddleWare Run huwa")
+    next();
+
+}
+
+// ----------------------------------------------------------------------
 // Routes
 // ----------------------------------------------------------------------
 
@@ -96,7 +150,9 @@ app.post("/register", async (req, res) => {
 
 });
 
-app.get("/users", async (req, res) => {
+app.get("/users", authMiddleware, async (req, res) => {
+    console.log(req.user)
+
     try {
         const users = await Employee.find().select("-password")
         res.status(200).json({
@@ -138,8 +194,9 @@ app.post("/login", async (req, res) => {
                 id: user._id,
                 role: user.role
             },
-            "MySecretKey123"
+            secret_Key
         );
+
 
 
         res.status(200).json({
@@ -161,6 +218,30 @@ app.post("/login", async (req, res) => {
         })
     }
 });
+
+app.delete(
+    "/employee/:id",
+
+    authMiddleware,
+
+    managerMiddleware,
+
+    async (req, res) => {
+        const employee = req.params.id
+        const deletedEmployee = await Employee.findByIdAndDelete(employee);
+
+        if (!deletedEmployee) {
+            return res.status(404).json({
+                success: false,
+                message: "Employee Not Found"
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Employee Deleted Successfully"
+        });
+    }
+)
 
 app.listen(3500, () => {
     console.log("server is running...")
