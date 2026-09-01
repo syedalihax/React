@@ -1,35 +1,54 @@
-function Header() {
-    return <h1>Todo App</h1>
-}
+import { useState } from "react";
 
-function TodoForm() {
-    return <h2>Add Todo</h2>
-}
-
-function TodoList() {
+function List(props) {
     return (
-        <>
-            <Item title="learn react"/>
-            <Item title="learn mongodb"/>
-            <Item title="learn express js"/>
-            <Item title="learn node js"/>
-        </>
-    )
-}
-function Item(props) {
-    return (
-        <p>{props.title}</p>
-    )
+        <div>
+            <p>{props.text}</p>
+            <button onClick={() => props.onDelete(props.index)}>
+                delete
+            </button>
+        </div>
+    );
 }
 
 function App() {
+    const [todos, setTodos] = useState([]);
+    const [text, setText] = useState("");
+
+    const deleteTodo = (index) => {
+        setTodos(
+            todos.filter((todo, currentIndex) => currentIndex !== index)
+        );
+    };
+
+    const addTodo = () => {
+        setTodos([...todos, text]);
+        setText("");
+    };
+
     return (
         <>
-            <Header />
-            <TodoForm />
-            <TodoList />
+            <p>{text}</p>
+
+            <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+            />
+
+            <button onClick={addTodo}>add Todo</button>
+
+            {todos.map((todo, index) => {
+                return (
+                    <List
+                        text={todo}
+                        index={index}
+                        key={index}
+                        onDelete={deleteTodo}
+                    />
+                );
+            })}
         </>
-    )
+    );
 }
 
 export default App;
