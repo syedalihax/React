@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function List(props) {
     return (
@@ -15,9 +15,25 @@ function List(props) {
 }
 
 function App() {
-    const [todos, setTodos] = useState([]);
+    const [todos, setTodos] = useState(() => {
+        const savedTodos = localStorage.getItem("todos");
+
+        if (savedTodos) {
+            return JSON.parse(savedTodos);
+        }
+
+        return [];
+    });
+
     const [text, setText] = useState("");
     const [editIndex, setEditIndex] = useState(null);
+
+
+
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos]);
+
     const deleteTodo = (index) => {
         setTodos(
             todos.filter((todo, currentIndex) => currentIndex !== index)
@@ -47,7 +63,8 @@ function App() {
 
     };
 
-    const addTodo = () => {
+    const addTodo = (e) => {
+        e.preventDefault()
         if (text.trim() === "") {
             return alert("todo cannot be empty")
         }
@@ -57,22 +74,17 @@ function App() {
 
     return (
         <>
-            <p>{text}</p>
 
-            <input
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-            />
-            {
-                editIndex === null ? (
+            <form onSubmit={addTodo}>
+                <input
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                />
 
-                    <button onClick={addTodo}>add Todo</button>
-                ) : (
-
-                    <button onClick={updateTodo}>save</button>
-                )
-            }
-
+                <button type="submit">
+                    add Todo
+                </button>
+            </form>
 
             {
                 todos.map((todo, index) => {
