@@ -1,86 +1,136 @@
 import { useState } from 'react'
 
-const App = () => {
-  const [data, setData] = useState(null)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  const sent = async () => {
-
-    try {
-      setError('')
-      setData(null)
-      setLoading(true)
-      const response = await fetch('https://jsonplaceholder.typicode.com/users', {
-        method: 'GET'
-      })
-      if (!response.ok) {
-        return setError('request failed')
-
-      }
-      console.log(response.status)
-      const result = await response.json()
-      setData(result)
-    } catch (error) {
-      console.log("CATCH:", error)
-      setError("Network error")
-      return
-    } finally {
-      setLoading(false)
-    }
-
-  }
-  const register = async () => {
-
-    try {
-      setError('')
-      setData(null)
-      setLoading(true)
-      const response = await fetch('https://jsonplaceholder.typicode.com/users', {
-        method: 'POST',
-        headers:{
-          'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({
-          username : 'Ali',
-          email: 'syedali@gmail.com'
-        })
-      })
-      if (!response.ok) {
-        return setError('request failed')
-
-      }
-      console.log(response.status)
-      const result = await response.json()
-      console.log(result)
-    } catch (error) {
-      console.log("CATCH:", error)
-      setError("Network error")
-      return
-    } finally {
-      setLoading(false)
-    }
-
-  }
+function Main({ userData, cart, theme }) {
   return (
     <div>
-      <h1>API Practice</h1>
-      <button disabled={loading} onClick={sent}>Send Request</button>
-      <button disabled={loading} onClick={register}>reg Request</button>
-      {data &&
-        data.map((user, index) => {
-          return (
-            <div key={index}>
-              <h1 >{user.id}</h1>
-              <h1 >{user.username}</h1>
-              <h1 >{user.email}</h1>
-            </div>
+      <h1>Main</h1>
+      <div className='flex'>
+        <Dashboard user={userData} theme={theme} />
+        <Home cart={cart} />
+      </div>
+    </div>
+  )
+}
+function Home({ cart }) {
+  return (
+    <div>
+      <h2>Home</h2>
+      <ProductList cart={cart} />
+    </div>
+  )
+}
+function ProductList({ cart }) {
+  return (
+    <div>
+      <h2>Product List</h2>
+      <Card cart={cart} />
+    </div>
+  )
+}
+function Card({ cart }) {
+  return (
+    <div>
+      <h3>{cart.title}</h3>
+      <p>{cart.des}</p>
+      <p>Brand: {cart.brand}</p>
+      <p>Stock: {cart.items}</p>
+      <p>{cart.price} PKR</p>
+    </div>
+  )
+}
+function Dashboard({ user, theme }) {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <SideBar data={user} />
+      <Footer theme={theme} />
+    </div>
+  )
+}
+function SideBar({ data }) {
+  return (
+    <div>
+      <h3>Side Bar</h3>
+      <Profile user={data} />
+    </div>
+  )
+}
+function Footer({ theme }) {
+  return (
+    <div>
+      <h2>Footer</h2>
+      <p>theme: {theme}</p>
+    </div>
+  )
+}
+function Profile({ user }) {
+  return (
+    <div>
+      <p> {user.name}'s Profile</p>
+    </div>
+  );
+}
 
-          )
-        })
-      }
-      {loading && <p>loading...</p>}
-      {error && <p>{error}</p>}
+function Navbar({ userData, notifications }) {
+  return (
+    <nav>
+      <h2>Navbar</h2>
+      <UserMenu user={userData} />
+      <Notify notifications={notifications} />
+    </nav>
+  );
+}
+function Notify({ notifications }) {
+  return (
+    <div>
+      <h2>Notification</h2>
+      {notifications.map((notification, index) => {
+        return (
+          <p key={index}>{notification}</p>
+        )
+      })}
+    </div>
+  )
+}
+function UserMenu({ user }) {
+  return (
+    <div>
+      <h3>User Menu</h3>
+      <p>{user.name}</p>
+      <p>{user.email}</p>
+    </div>
+  );
+}
+
+const App = () => {
+
+  const user = {
+    name: "Ali",
+    email: "ali@gmail.com"
+  };
+
+  const cart = {
+    title: 'iphone 13 pro',
+    des: 'new',
+    brand: 'iphone',
+    items: 3,
+    price: '120000'
+  };
+
+  const theme = "dark";
+
+  const notifications = [
+    "New order",
+    "Payment received",
+    "order received",
+    "order delivered"
+  ];
+
+  return (
+    <div className='flex'>
+      <Navbar userData={user} notifications={notifications} />
+      <Main userData={user} cart={cart} theme={theme} />
+
     </div>
   )
 }
