@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
+import UserProvider from './context/UserProvider'
+import UserContext from './context/UserContext'
 
-function Main({ userData, cart, theme }) {
+function Main({ cart, theme }) {
   return (
     <div>
       <h1>Main</h1>
       <div className='flex'>
-        <Dashboard user={userData} theme={theme} />
+        <Dashboard theme={theme} />
         <Home cart={cart} />
       </div>
     </div>
@@ -38,11 +40,11 @@ function Card({ cart }) {
     </div>
   )
 }
-function Dashboard({ user, theme }) {
+function Dashboard({ theme }) {
   return (
     <div>
       <h2>Dashboard</h2>
-      <SideBar data={user} />
+      <SideBar />
       <Footer theme={theme} />
     </div>
   )
@@ -51,7 +53,7 @@ function SideBar({ data }) {
   return (
     <div>
       <h3>Side Bar</h3>
-      <Profile user={data} />
+      <Profile />
     </div>
   )
 }
@@ -63,19 +65,20 @@ function Footer({ theme }) {
     </div>
   )
 }
-function Profile({ user }) {
+function Profile() {
+  const { user } = useContext(UserContext)
   return (
     <div>
-      <p> {user.name}'s Profile</p>
+      {user ? <p>{user.name}'s Profile</p> : <p>Login required</p>}
     </div>
   );
 }
 
-function Navbar({ userData, notifications }) {
+function Navbar({ notifications }) {
   return (
     <nav>
       <h2>Navbar</h2>
-      <UserMenu user={userData} />
+      <UserMenu />
       <Notify notifications={notifications} />
     </nav>
   );
@@ -92,23 +95,34 @@ function Notify({ notifications }) {
     </div>
   )
 }
-function UserMenu({ user }) {
+function UserMenu() {
+
+  const userData = {
+    name: "Ali",
+    email: "ali@gmail.com"
+  };
+  const { user, login, logOut, loading, register } = useContext(UserContext)
   return (
     <div>
       <h3>User Menu</h3>
-      <p>{user.name}</p>
-      <p>{user.email}</p>
+      {user ? <p>{user.name}</p> : <p>Login / Register</p>}
+      {user && <p>{user.email}</p>}
+      {!user ?
+        <div>
+          <button disabled={loading} onClick={() => { login(userData) }}>{loading ? 'Processing...' : 'Login'}</button>
+          {!loading && <button disabled={loading} onClick={() => { register(userData) }}>register</button>}
+
+        </div>
+
+        :
+        <button onClick={() => { logOut() }}>LogOut</button>
+
+      }
     </div>
   );
 }
 
 const App = () => {
-
-  const user = {
-    name: "Ali",
-    email: "ali@gmail.com"
-  };
-
   const cart = {
     title: 'iphone 13 pro',
     des: 'new',
@@ -128,8 +142,11 @@ const App = () => {
 
   return (
     <div className='flex'>
-      <Navbar userData={user} notifications={notifications} />
-      <Main userData={user} cart={cart} theme={theme} />
+
+      <UserProvider>
+        <Navbar notifications={notifications} />
+        <Main cart={cart} theme={theme} />
+      </UserProvider>
 
     </div>
   )
