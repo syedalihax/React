@@ -26,11 +26,22 @@ function UserProvider({ children }) {
         setUser(null)
     }
 
-
+    const change = () => {
+        const changedUser = {
+            name: 'Hassan',
+            email: 'SyedHassan@gmail.com'
+        }
+        setLoading(true)
+        setTimeout(() => {
+            setUser(changedUser)
+            setLoading(false)
+        }, 1000);
+    }
     const contextValue = {
         user,
         login,
         logOut,
+        change,
         loading,
         register
     }
