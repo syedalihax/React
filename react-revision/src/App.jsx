@@ -1,6 +1,8 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import UserProvider from './context/UserProvider';
 import UserContext from './context/UserContext';
+import CartContext from './context/CartContext';
+import CartProvider from './context/CartProvider';
 
 
 function Profile() {
@@ -67,28 +69,56 @@ function UserMenu() {
 }
 
 function Navbar() {
+  const { cartItem, } = useContext(CartContext)
+  const [isCart, setIsCart] = useState(false)
   return (
-    <nav>
-      <h2>Navbar</h2>
-      <UserMenu />
-    </nav>
+    <>
+      {isCart ? <div>
+        <button onClick={() => { setIsCart(false) }}>hide</button>
+        {cartItem.length === 0 ? 'Your Cart is Empty' : <Cart />}
+      </div> :
+        <nav>
+          <h2>Navbar</h2>
+          <UserMenu />
+          <button
+            onClick={() => {
+              setIsCart(true)
+            }}>Cart {cartItem.length}</button>
+        </nav>}
+    </>
   );
 }
-
-function Card() {
+function Cart() {
+  const { cartItem, removeProduct } = useContext(CartContext)
   return (
     <div>
-      <h3>Product Card</h3>
-      <p>Product details will go here.</p>
+      {cartItem.map((product, index) => {
+        return <Card key={index} name={product.name} brand={product.brand} price={product.price} id={product.id} action={() => removeProduct(product.id)} button='Remove' />
+      })}
+
+    </div>
+  )
+}
+function Card({ name, brand, price, id, action, button }) {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <p>{brand}</p>
+      <p>{price}</p>
+      <button onClick={action}>{button}</button>
     </div>
   );
 }
 
 function ProductList() {
+  const { products, addProduct } = useContext(CartContext)
   return (
     <div>
       <h2>Product List</h2>
-      <Card />
+
+      {products.map((product, index) => {
+        return <Card key={product.id} name={product.name} brand={product.brand} price={product.price} id={product.id} action={() => addProduct(product)} button='Add to Cart' />
+      })}
     </div>
   );
 }
@@ -128,10 +158,13 @@ function Main() {
 function App() {
   return (
     <UserProvider>
-      <div className="flex">
-        <Navbar />
-        <Main />
-      </div>
+      <CartProvider>
+
+        <div className="flex">
+          <Navbar />
+          <Main />
+        </div>
+      </CartProvider>
     </UserProvider>
   );
 }
